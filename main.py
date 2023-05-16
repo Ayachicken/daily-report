@@ -8,6 +8,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
+from selenium.webdriver import ActionChains
+from selenium.webdriver.common.keys import Keys
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -20,9 +22,9 @@ calc_excel = os.environ.get("CALC_EXCEL")
 
 today = datetime.date.today().strftime("%Y/%m/%d")
 
-wb = xw.Book(repair_excel)
+wb1 = xw.Book(repair_excel)
 
-sht = wb.sheets['作業記録']
+sht = wb1.sheets['作業記録']
 sht.activate() #作業記録シートを開き、アクティブシートにする
 
 stf_name = sht.range('C694').value
@@ -56,18 +58,18 @@ driver.find_element(By.LINK_TEXT, stf_name).click()
 time.sleep(5)
 
 ActionChains(driver)\
-    .key_down(keys.CONTROL)\
+    .key_down(Keys.CONTROL)\
     .send_keys("a")\
     .perform() #Ctrl+aで全範囲選択
 
 ActionChains(driver)\
-    .key_down(key.CONTROL)\
+    .key_down(Keys.CONTROL)\
     .send_keys("c")\
     .perform #Ctrl+cでコピー
 
-calc_wb = xw.Book(calc_excel)
+wb2 = xw.Book(calc_excel)
 
-sht = calc_wb['貼付シート']
+sht = wb2['貼付シート']
 sht.activate() #貼付用シートをアクティブにする
 
 xw.Range('A5').paste
